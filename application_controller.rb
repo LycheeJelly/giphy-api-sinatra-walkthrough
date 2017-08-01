@@ -13,11 +13,11 @@ class MyApp < Sinatra::Base
   end
   
   #this should change to post method to get user info from the root route
-  get '/show_me_the_gif' do
+  post '/' do
     #build the URL to get the data from
     #this comes from local.env file
     giphy_api_key = ENV['GIPHY_API_KEY']
-    search_term = "worm"
+    search_term = params[:user_search_word]
     api_endpoint_url = "http://api.giphy.com/v1/stickers/translate?api_key=#{giphy_api_key}&s=#{search_term}"
     
     #this gets the json from the URL
@@ -28,7 +28,7 @@ class MyApp < Sinatra::Base
     
     #this will need to changed slightly so that we can actually use the
     #hash in the erb view
-    giphy_images_hash = giphy_response_hash['data']
+    @giphy_images_hash = giphy_response_hash['data']
     erb :results_page
   end
 
